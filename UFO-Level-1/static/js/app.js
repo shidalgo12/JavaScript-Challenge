@@ -1,22 +1,29 @@
-// // Console.log the weather data from data.js
-// console.log(data);
-
-// // Step 1: Loop Through `data` and console.log each weather report object
-// data.forEach(row => console.log(row));
-
-
-// from data.js
+// Assign the data from `data.js` to a descriptive variable
 var tableData = data;
 
 // Get a reference to the table body
 var tbody = d3.select("tbody");
 
-data.forEach(row => {
-    let nRow = tbody.append("tr");
+function buildTable(data) {
+tbody.html("")
+data.forEach((row) => {
+    var nRow = tbody.append("tr");
     // runs once for each key-value pair in a row
-    Object.entries(row).forEach(entry => {
-        let key = entry[0];
-        let val = entry[1];
-        nRow.append("td").text(val);
+    Object.values(row).forEach((entry) => {
+      var cell = nRow.append("td");
+      cell.text(entry);
     }); 
 });
+};
+
+buildTable(tableData);
+
+function filter() {
+var date = d3.select("#datetime").property("value");
+var filterData = tableData;
+filterData = filterData.filter(nRow => nRow.datetime === date);
+console.log(filterData)
+buildTable(filterData);
+};
+
+d3.selectAll("#filter-btn").on("click", filter);
